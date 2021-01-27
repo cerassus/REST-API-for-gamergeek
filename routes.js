@@ -6,8 +6,18 @@ const Database = require('./mongoose_model_games');
 router.get("/scores", async (req, res) => {
     try {
         await Scores.find().then((results) => {
-            res.status(200).json(results);
+            res.status(200).json(results.sort((a, b) => b.Score - a.Score).slice(0, 15));
         });
+    }
+    catch(err) {
+        res.json({error: err});
+    }
+});
+
+router.get("/date", async (req, res) => {
+    try {
+        const datka = await new Date();
+        res.status(200).json({date: datka});
     }
     catch(err) {
         res.json({error: err});
